@@ -49,6 +49,13 @@ def get_columns(filters):
 
 
 def get_data(filters):
+
+	driver_condition=''
+	if filters.get('driver'):
+		driver_condition="= '"+filters.get('driver')+"'"
+	else:
+		driver_condition="!=''"
+
 	result=frappe.db.sql("""
 select  si.posting_date,
 		si.name as sales_invoice,
@@ -67,11 +74,11 @@ select  si.posting_date,
             where 
 				si.docstatus = 1
 				and si.is_return = 0
-				and driver.name=%s
+				and driver.name {driver_condition}
                 and si.posting_date between %s and %s
 				and si_item.item_group =(select name from `tabItem Group` item_group where is_service_item_cf=1) 
 			group by si_item.item_name,si.name,driver.full_name	
                    	
-	""",(filters.get('driver'),filters.get('from_date'),filters.get('to_date')),as_dict=True)
+	""".format(driver_condition=driver_condition),(filters.get('from_date'),filters.get('to_date')),as_dict=True)
 
 	return result	
