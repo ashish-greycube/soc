@@ -1,0 +1,28 @@
+{
+ "add_total_row": 1,
+ "creation": "2020-06-20 11:46:58.412034",
+ "disable_prepared_report": 0,
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "idx": 0,
+ "is_standard": "Yes",
+ "modified": "2020-06-20 19:55:49.005065",
+ "modified_by": "Administrator",
+ "module": "Soc",
+ "name": "Driver Commission",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "query": "select driver.full_name as \"Driver:Link/Driver:150\",\n\t   sum(si_item.qty*item.driver_commission_cf) as 'total comission'\n\t\t\tfrom\n\t\t\t\t`tabSales Invoice` si \n\t\t\tinner join `tabSales Invoice Item` si_item\n\t\t\ton\n\t\t\t\tsi.name = si_item.parent\n\t\t\tinner join `tabItem` item\n            on si_item.item_code=item.item_code\n            inner join `tabDriver` driver\n            on si.driver_cf=driver.name\n            where \n\t\t\t\tsi.docstatus = 1\n\t\t\t\tand si.is_return = 0\n                and si.posting_date between '2020-06-20'and '2020-07-20'\n\t\t\t\tand si_item.item_group =(select name from `tabItem Group` item_group where is_service_item_cf=1) \n\t\t\tgroup by driver.full_name\n\t\t\t\n                   ",
+ "ref_doctype": "Sales Invoice",
+ "report_name": "Driver Commission",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "Accounts Manager"
+  },
+  {
+   "role": "Accounts User"
+  }
+ ]
+}
