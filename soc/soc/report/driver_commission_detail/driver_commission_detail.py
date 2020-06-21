@@ -18,7 +18,7 @@ def get_columns(filters):
 			"label": _("Date"),
 			"fieldtype": "Date",
 			"fieldname": "posting_date",
-			"width": 100
+			"width": 100,
 		},
 		{
 			"label": _("Sales Invoice"),
@@ -31,13 +31,13 @@ def get_columns(filters):
 			"label": _("Route"),
 			"fieldtype": "Data",
 			"fieldname": "item_name",
-			"width": 200
+			"width": 250
 		},	
 		{
 			"label": _("Driver"),
 			"fieldtype": "data",
 			"fieldname": "driver",
-			"width": 200
+			"width": 250
 		},	
 		{
 			"label": _("Comission"),
@@ -49,12 +49,11 @@ def get_columns(filters):
 
 
 def get_data(filters):
+	condition=''
 
-	driver_condition=''
 	if filters.get('driver'):
-		driver_condition="= '"+filters.get('driver')+"'"
-	else:
-		driver_condition="!=''"
+		condition+='and driver.name =%s' %(frappe.db.escape(filters.get('driver')))
+	condition+=' and si.posting_date between %s and %s' %(frappe.db.escape(filters.get('from_date')),frappe.db.escape(filters.get('to_date')))
 
 	result=frappe.db.sql("""
 select  si.posting_date,
@@ -74,11 +73,11 @@ select  si.posting_date,
             where 
 				si.docstatus = 1
 				and si.is_return = 0
-				and driver.name {driver_condition}
-                and si.posting_date between %s and %s
+				{condition}
+               
 				and si_item.item_group =(select name from `tabItem Group` item_group where is_service_item_cf=1) 
 			group by si_item.item_name,si.name,driver.full_name	
                    	
-	""".format(driver_condition=driver_condition),(filters.get('from_date'),filters.get('to_date')),as_dict=True)
+	""".format(condition=condition),as_dict=True)
 
 	return result	

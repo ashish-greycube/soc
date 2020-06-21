@@ -30,12 +30,10 @@ def get_columns(filters):
 
 
 def get_data(filters):
-	driver_condition=''
+	condition=''
 	if filters.get('driver'):
-		driver_condition="= '"+filters.get('driver')+"'"
-	else:
-		driver_condition="!=''"
-		
+		condition += "and driver.name=%s" %(frappe.db.escape(filters.get('driver')))
+	condition +=" and si.posting_date between %s and %s" %(frappe.db.escape(filters.get('from_date')),frappe.db.escape(filters.get('to_date')))
 	result=frappe.db.sql("""
 select driver.full_name as driver,
 	   sum(si_item.qty*item.driver_commission_cf) as total_comission
@@ -51,10 +49,9 @@ select driver.full_name as driver,
             where 
 				si.docstatus = 1
 				and si.is_return = 0
-				and driver.name {driver_condition}
-                and si.posting_date between %s and %s
+				{condition}
 				and si_item.item_group =(select name from `tabItem Group` item_group where is_service_item_cf=1) 
 			group by driver.full_name                   	
-	""".format(driver_condition=driver_condition),(filters.get('from_date'),filters.get('to_date')),as_dict=True)
+	""".format(condition=condition),as_dict=True)
 
 	return result	

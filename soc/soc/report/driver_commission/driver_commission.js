@@ -8,13 +8,15 @@ frappe.query_reports["Driver Commission"] = {
 			label: __("From Date"),
 			fieldtype: "Date",
 			fieldname: "from_date",
-			default:frappe.datetime.add_days(frappe.datetime.get_today(), -30)
+			default:frappe.datetime.add_days(frappe.datetime.get_today(), -30),
+			req:1
 		},
 		{
 			label: __("To Date"),
 			fieldtype: "Date",
 			fieldname: "to_date",
 			default: frappe.datetime.get_today(),
+			req:1
 		},	
 		{
 			label: __("Driver"),
