@@ -16,7 +16,7 @@ app_license = "MIT"
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/soc/css/soc.css"
-# app_include_js = "/assets/soc/js/soc.js"
+app_include_js = ["/assets/soc/js/lib/ag-grid-community.min.js"]
 
 # include js, css files in header of web template
 # web_include_css = "/assets/soc/css/soc.css"
@@ -27,9 +27,9 @@ app_license = "MIT"
 
 # include js in doctype views
 doctype_js = {
-    "Purchase Invoice":"public/js/purchase_invoice.js",
-    "Item":"public/js/item.js",    
-    }
+    "Purchase Invoice": "public/js/purchase_invoice.js",
+    "Item": "public/js/item.js",
+}
 
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
@@ -130,4 +130,3 @@ doctype_js = {
 # override_doctype_dashboards = {
 # 	"Task": "soc.task.get_dashboard_data"
 # }
-
