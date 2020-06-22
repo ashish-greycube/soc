@@ -10,6 +10,7 @@ def make_sales_invoice_from_purchase_invoice(source_name,target_doc=None,):
 		if len(target.get("items")) == 0:
 			frappe.throw(_("No Items found"))
 		doc = frappe.get_doc(target)
+		doc.inter_company_invoice_reference=None
 		doc.customer=source.customer_cf
 		doc.ignore_pricing_rule = 0
 		doc.run_method("onload")
