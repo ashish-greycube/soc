@@ -50,7 +50,7 @@ select driver.full_name as driver,
 				si.docstatus = 1
 				and si.is_return = 0
 				{condition}
-				and si_item.item_group =(select name from `tabItem Group` item_group where is_service_item_cf=1) 
+				and si_item.item_group in (select name from `tabItem Group` item_group where is_service_item_cf=1) 
 			group by driver.full_name                   	
 	""".format(condition=condition),as_dict=True)
 

@@ -75,7 +75,7 @@ select  si.posting_date,
 				and si.is_return = 0
 				{condition}
                
-				and si_item.item_group =(select name from `tabItem Group` item_group where is_service_item_cf=1) 
+				and si_item.item_group in (select name from `tabItem Group` item_group where is_service_item_cf=1) 
 			group by si_item.item_name,si.name,driver.full_name	
                    	
 	""".format(condition=condition),as_dict=True)
